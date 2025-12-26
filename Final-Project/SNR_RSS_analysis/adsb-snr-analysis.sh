@@ -1,0 +1,2 @@
+# python adsb_snr_analysis.py "C:\Users\BettyCheng\Documents\MATLAB\Examples\R2025a\comm\AirplaneTrackingUsingADSBSignalsExample\adsb_message_snr_1216_1600.txt" --out "results\SNR"
+python adsb_snr_analysis.py <Your-log-file-from-MATLAB-ADS-B-Receiver.txt> --out "results\SNR"

@@ -1,0 +1,1 @@
+python adsb_rss_analysis.py <Your-log-file-from-MATLAB-ADS-B-Receiver.txt> --out "results\RSS"
