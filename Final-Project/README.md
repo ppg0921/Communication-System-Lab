@@ -15,13 +15,11 @@ Contains the datasets used by the Python scripts in this repository.
   Plots data captured on the demo day.
 
 ### Morris_Matlab/
-*Author: Zhan-Rui (Morris) Wang*  
-Contains a MATLAB implementation of Doppler shift measurement.
-
-### Liu/
-*Author: Dai-En Liu*  
-Includes a modified MATLAB function:
+*Author: Zhan-Rui (Morris) Wang, Dai-En Liu*  
+Contains MATLAB sample code (with modification) and an implementation of Doppler shift measurement.
 - Adds an energy threshold to `helperAdsbRxPhyBitParser.m`.
+- **plot_packet.m**
+  Plots the first received correctly and incorrectly decoded packets.
 
 ### SNR_RSS_analysis/
 *Author: Chun-Yun (Betty) Cheng*  
