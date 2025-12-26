@@ -1,1 +1,0 @@
-Message, CRC, Time, DF, CA, ICAO24, TC, Vehicle Category, Flight ID, Status, Antenna, Altitude, UTC Sync, CPR Format, Latitude, Longitude, Subtype, Intent Change, IFR Capability, Velocity Uncertainty, Speed, Heading(°), Heading, Vertical Rate, Turn Indicator, GHD
