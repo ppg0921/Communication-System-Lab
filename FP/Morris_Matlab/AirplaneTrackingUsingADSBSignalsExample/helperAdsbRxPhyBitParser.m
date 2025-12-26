@@ -18,7 +18,27 @@ function [pkt,packetCnt,last_packet] = helperAdsbRxPhyBitParser(packetSamples,..
 pkt = repmat(helperAdsbPhyPacket(adsbParam),adsbParam.MaxNumPacketsInFrame,1);
 last_packet = pkt(1);
 
+persistent correctlyDecodedPacket incorrectlyDecodedPacket
+
+if isempty(correctlyDecodedPacket)
+    % Initialize storage to empty when the function first runs
+    correctlyDecodedPacket = [];
+end
+if isempty(incorrectlyDecodedPacket)
+    incorrectlyDecodedPacket = [];
+end
+
 for p=1:packetCnt
+
+  % Calculate total energy of the packet samples
+  packetEnergy = sum(abs(packetSamples(:,p)).^2);
+
+  % Threshold: If energy is too low, it's a ghost packet. Ignore it.
+  if packetEnergy < 0.01 % You can tune this value based on your plot
+      % Skip this packet (do not count it as an error or a valid packet)
+      continue; 
+  end
+    
   % Demodulated samples into data bits
   xLong = adsbDemod(packetSamples(:,p), adsbParam);
   
@@ -28,6 +48,20 @@ for p=1:packetCnt
   % Check CRC
   err = adsbCRC(xLong, pkt(p,1).DF, adsbParam);
   
+  if isempty(correctlyDecodedPacket) && (err == 0) % Correctly decoded (CRC passes)
+      correctlyDecodedPacket = packetSamples(:,p);
+      % EXPORT TO WORKSPACE
+      assignin('base', 'correctlyDecodedPacket', correctlyDecodedPacket); 
+      disp('*** Saved FIRST Correctly Decoded Packet to Workspace ***');
+  end
+
+  if isempty(incorrectlyDecodedPacket) && (err == 1) % Incorrectly decoded (CRC fails)
+      incorrectlyDecodedPacket = packetSamples(:,p);
+      % EXPORT TO WORKSPACE
+      assignin('base', 'incorrectlyDecodedPacket', incorrectlyDecodedPacket); 
+      disp('*** Saved FIRST Incorrectly Decoded Packet to Workspace ***');
+  end
+
   % Add time stamp and CRC check value (0: correct packet, 1: failed
   % CRC). Add the packet to the packet buffer and increment packet count.
   pkt(p,1).Time = radioTime + double(syncTimeVec(p,1))/adsbParam.SampleRate;
